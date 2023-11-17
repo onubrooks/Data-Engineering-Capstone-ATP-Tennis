@@ -2,20 +2,20 @@
 
 # Access parameters passed from the DAG
 # base_url="{{ params.base_url }}"
-# file_save_location="{{ params.file_save_location }}"
+# download_directory="{{ params.download_directory }}"
 base_url=$1
-file_save_location=$2
+download_directory=$2
 
 # Create the downloads directory if it doesn't exist
-mkdir -p $file_save_location/matches
-mkdir -p $file_save_location/rankings
-mkdir -p $file_save_location/players
+mkdir -p $download_directory/matches
+mkdir -p $download_directory/rankings
+mkdir -p $download_directory/players
 
 #!/bin/bash
 
 # Download the players file
 player_url="${base_url}atp_players.csv"
-wget -O "${file_save_location}/players/atp_players.csv" "${player_url}"
+wget -O "${download_directory}/players/atp_players.csv" "${player_url}"
 
 <<comment
 # Specify the years to download data for
@@ -27,7 +27,7 @@ for year in "${match_years[@]}"; do
     match_url="${base_url}atp_matches_${year}.csv"
 
     # Download the match files
-    wget -O "${file_save_location}/matches/atp_matches_${year}.csv" "${match_url}"
+    wget -O "${download_directory}/matches/atp_matches_${year}.csv" "${match_url}"
 done
 
 # Download ranking data for each decade
@@ -38,7 +38,7 @@ for year in "${rank_years[@]}"; do
     rank_url="${base_url}atp_rankings_${year}.csv"
 
     # Download the match files
-    wget -O "${file_save_location}/rankings/atp_rankings_${year}.csv" "${rank_url}"
+    wget -O "${download_directory}/rankings/atp_rankings_${year}.csv" "${rank_url}"
 done
 comment
 
