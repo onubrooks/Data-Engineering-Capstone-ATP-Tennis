@@ -42,7 +42,7 @@ This capstone project demonstrates the potential of data engineering to transfor
 
 - DBT: For comprehensive documentation on DBT installation, configuration, and usage, please visit the official documentation: [https://docs.getdbt.com/docs/collaborate/documentation](https://docs.getdbt.com/docs/collaborate/documentation). Local set up for this project can be found here: [dbt.md](/dbt.md).
 
-- Google Cloud: To set up and utilize Google Cloud services, including GCS, BigQuery, and Pub/Sub, follow the official documentation and tutorials provided by Google: https://cloud.google.com/docs. Local set up for this project can be found here: [google_cloud.md](/google_cloud.md).
+- Google Cloud: To set up and utilize Google Cloud services, including GCS, BigQuery, and Pub/Sub, follow the official documentation and tutorials provided by Google: [https://cloud.google.com/docs](https://cloud.google.com/docs). Local set up for this project can be found here: [google_cloud.md](/google_cloud.md).
 
 - Docker: For comprehensive instructions on installing and using Docker, please refer to the official documentation: [https://docs.docker.com/](https://docs.docker.com/).
 
