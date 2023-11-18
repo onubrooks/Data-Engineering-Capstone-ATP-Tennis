@@ -1,0 +1,6 @@
+apache-airflow-providers-google
+google-cloud-storage
+apache-airflow-providers-http
+apache-airflow-providers-dbt-cloud
+pyarrow
+pycountry
