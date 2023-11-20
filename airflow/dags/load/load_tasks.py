@@ -4,6 +4,12 @@ from load.load_db import create_db_table, insert_into_db
 from load.load_functions import get_country_name, str_to_datetime
 
 def clean_and_load_players(FILE_PATH, db_engine):
+    """load player file and examine the data, then write transformed data to parquet
+
+    Args:
+        FILE_PATH (_type_): the path to the data files
+        db_engine (_type_): the database engine
+    """
     # load player file and examine the data
     players = pd.read_parquet(f'{FILE_PATH}/players/atp_players.parquet')
     # drop wikidata_id column
@@ -29,7 +35,13 @@ def clean_and_load_players(FILE_PATH, db_engine):
 
 
 def clean_and_load_matches(FILE_PATH, db_engine, match_years):
-    # load all matches file and examine the data, then write transformed data to parquet
+    """load all matches file and examine the data, then write transformed data to parquet
+
+    Args:
+        FILE_PATH (_type_): the path to the data files
+        db_engine (_type_): the database engine
+        match_years (_type_): a list of years to load
+    """
     for index, year in enumerate(match_years):
         matches = pd.read_parquet(f'{FILE_PATH}/matches/atp_matches_{year}.parquet')
         # drop columns winner_ht, loser_ht, winner_name, winner_ioc, loser_name, loser_ioc
@@ -47,7 +59,13 @@ def clean_and_load_matches(FILE_PATH, db_engine, match_years):
         insert_into_db(db_engine, f'atp_matches', matches)
 
 def clean_and_load_rankings(FILE_PATH, db_engine, rank_years):
-    # load rankings file and examine the data, then write transformed data to parquet using enumerate
+    """load rankings file and examine the data, then write transformed data to parquet using enumerate
+
+    Args:
+        FILE_PATH (_type_): the path to the data files
+        db_engine (_type_): the database engine
+        rank_years (_type_): a list of years to load
+    """
     for index, year in enumerate(rank_years):
         rankings = pd.read_parquet(f'{FILE_PATH}/rankings/atp_rankings_{year}.parquet')
         # convert ranking_date to datetime from yyyymmdd format

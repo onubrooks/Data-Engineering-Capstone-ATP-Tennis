@@ -68,7 +68,7 @@ with DAG(
     )
     
     t3 = PostgresOperator(
-        task_id="create_airflow_db",
+        task_id="create_tennis_db",
         postgres_conn_id="postgres_default",
         sql="CREATE DATABASE atp_tennis_2000_2019;",
         autocommit=True,
@@ -92,6 +92,7 @@ with DAG(
         dag=dag
     )
 
+    # BigQuery Docs: https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/bigquery.html
     t6 = BigQueryCreateExternalTableOperator(
             task_id = f'create_external_table_players',
             table_resource = {
@@ -137,12 +138,12 @@ with DAG(
             }
     )
 
-    t9 = BashOperator(
+    """t9 = BashOperator(
         task_id='delete_files',
-        bash_command='rm -r downloads',
+        bash_command=f'rm -r {FULL_DOWNLOAD_PATH}',
         dag=dag
     )
 
-    end = EmptyOperator(task_id="end")
+    end = EmptyOperator(task_id="end")"""
 
-start >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 >> end
+start >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 #>> end

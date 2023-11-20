@@ -3,8 +3,18 @@ from sqlalchemy import create_engine
 # Create a function that will create a DB connection to our postgres DB and  ingestion into it
 
 def get_db_conn_engine(user, password, host, port, db):
-    # Create a function that will create a DB connection to our postgres DB and  ingestion into it
+    """Create a function that will create a DB connection to our postgres DB and  ingestion into it
 
+    Args:
+        user (_type_): _description_
+        password (_type_): _description_
+        host (_type_): _description_
+        port (_type_): _description_
+        db (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db}")
     engine.connect()
 
