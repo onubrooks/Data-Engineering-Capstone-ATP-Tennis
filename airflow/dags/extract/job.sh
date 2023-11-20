@@ -17,9 +17,8 @@ mkdir -p $download_directory/players
 player_url="${base_url}atp_players.csv"
 wget -O "${download_directory}/players/atp_players.csv" "${player_url}"
 
-<<comment
 # Specify the years to download data for
-match_years=(2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020)
+match_years=(2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020)
 
 # Download match data for each year
 for year in "${match_years[@]}"; do
@@ -40,6 +39,3 @@ for year in "${rank_years[@]}"; do
     # Download the match files
     wget -O "${download_directory}/rankings/atp_rankings_${year}.csv" "${rank_url}"
 done
-comment
-
-# To test, run: sh download_files.sh https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/ downloads

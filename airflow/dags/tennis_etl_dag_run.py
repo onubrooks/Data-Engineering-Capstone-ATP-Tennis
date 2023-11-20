@@ -1,10 +1,10 @@
 from datetime import timedelta, datetime
 import os
-import airflow
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryCreateExternalTableOperator
 
 from transform.job import transform_tennis_data
@@ -19,6 +19,7 @@ PG_PASSWORD = os.getenv('PG_PASSWORD')
 PG_PORT = os.getenv('PG_PORT')
 PG_DATABASE = os.getenv('PG_DATABASE')
 DOWNLOAD_DIRECTORY = "downloads"
+FULL_DOWNLOAD_PATH = f'{AIRFLOW_HOME}/dags/{DOWNLOAD_DIRECTORY}'
 
 MATCH_YEARS=(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)
 
@@ -34,117 +35,114 @@ RANKINGS_TABLE = 'atp_rankings'
 
 default_args = {
     'owner': 'airflow',
-    'start_date': airflow.utils.dates.days_ago(2),
-    'retry_delay': timedelta(minutes=1), #datetime(2020, 1, 1)
+    'start_date': datetime(2020, 1, 1), #airflow.utils.dates.days_ago(2),
+    'retry_delay': timedelta(minutes=1),
     'retry': 2,
     'email_on_failure': False,
     'email_on_retry': False,
     "email": [os.getenv("ALERT_EMAIL", "")],
 }
 
-dag = DAG(
-    dag_id = 'tennis_etl_dag_run',
+with DAG(
+    'tennis_etl_dag_run',
     default_args = default_args,
     description = 'ETL for tennis data',
-    schedule_interval="@once", #At the 5th minute of every hour 
-    # "0 6 2 * *" #At 6:00 am on the 2nd day of every month
-    start_date=datetime(2022,3,20),
-    end_date=datetime(2022,3,20),
+    schedule_interval="@once", #for one time
     catchup=True,
     tags=['tennis_etl', 'tennis_etl_dag_run'],
-    max_active_runs=1,
-)
+    max_active_runs=5,
+) as dag:
 
-start = EmptyOperator(task_id="start")
+    start = EmptyOperator(task_id="start")
 
-t1 = BashOperator(
-    task_id='make_script_executable',
-    bash_command='chmod +x download_files.sh',
-    dag=dag
-)
+    t1 = BashOperator(
+        task_id='extract_files',
+        bash_command=f'{AIRFLOW_HOME}/dags/extract/job.sh {BASE_URL} {FULL_DOWNLOAD_PATH} ',
+    )
 
-t2 = BashOperator(
-    task_id='extract_files',
-    bash_command='sh {{ AIRFLOW_HOME }} /extract/job.sh {{ params.download_url }} {{ params.download_directory }}',
-    params={'download_url': BASE_URL, 'download_directory': DOWNLOAD_DIRECTORY},
-    dag=dag
-)
+    # python operator to convert to parquet
+    t2 = PythonOperator(
+        task_id='transform_to_parquet',
+        python_callable=transform_tennis_data,
+        op_kwargs={'PG_USER': PG_USER, 'PG_PASSWORD': PG_PASSWORD, 'PG_HOST': PG_HOST, 'PG_PORT': PG_PORT, 'PG_DATABASE': PG_DATABASE, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS, 'FILE_SAVE_LOCATION': FULL_DOWNLOAD_PATH},
+    )
+    
+    t3 = PostgresOperator(
+        task_id="create_airflow_db",
+        postgres_conn_id="postgres_default",
+        sql="CREATE DATABASE atp_tennis_2000_2019;",
+        autocommit=True,
+        dag=dag,
+    )
 
-# python operator to convert to parquet
-t3 = PythonOperator(
-    task_id='transform_to_parquet',
-    python_callable=transform_tennis_data,
-    op_kwargs={'PG_USER': PG_USER, 'PG_PASSWORD': PG_PASSWORD, 'PG_HOST': PG_HOST, 'PG_PORT': PG_PORT, 'PG_DATABASE': PG_DATABASE, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS},
-    dag=dag
-)
+    # python operator to clean and load to postgres
+    t4 = PythonOperator(
+        task_id='clean_and_load',
+        python_callable=clean_and_load_tennis_data,
+        op_kwargs={'PG_USER': PG_USER, 'PG_PASSWORD': PG_PASSWORD, 'PG_HOST': PG_HOST, 'PG_PORT': PG_PORT, 'PG_DATABASE': PG_DATABASE, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS, 'FILE_PATH': FULL_DOWNLOAD_PATH},
+        dag=dag
+    )
+    
 
-# python operator to clean and load to postgres
-t4 = PythonOperator(
-    task_id='clean_and_load',
-    python_callable=clean_and_load_tennis_data,
-    op_kwargs={'PG_USER': PG_USER, 'PG_PASSWORD': PG_PASSWORD, 'PG_HOST': PG_HOST, 'PG_PORT': PG_PORT, 'PG_DATABASE': PG_DATABASE, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS},
-    dag=dag
-)
+    # python operator to upload to gcs
+    t5 = PythonOperator(
+        task_id='upload_to_gcs',
+        python_callable=upload_tennis_data_to_gcs,
+        op_kwargs={'destination_bucket': DESTINATION_BUCKET, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS, 'FILE_PATH': FULL_DOWNLOAD_PATH},
+        dag=dag
+    )
 
-# python operator to upload to gcs
-t5 = PythonOperator(
-    task_id='upload_to_gcs',
-    python_callable=upload_tennis_data_to_gcs,
-    op_kwargs={'destination_bucket': DESTINATION_BUCKET, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS},
-    dag=dag
-)
+    t6 = BigQueryCreateExternalTableOperator(
+            task_id = f'create_external_table_players',
+            table_resource = {
+                'tableReference': {
+                'projectId': PROJECT_ID,
+                'datasetId': TENNIS_DATASET,
+                'tableId': PLAYERS_TABLE,
+                },
+                'externalDataConfiguration': {
+                    'sourceFormat': 'PARQUET',
+                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{PLAYERS_TABLE}/*.parquet'],
+                },
+            }
+    )
 
-t6 = BigQueryCreateExternalTableOperator(
-        task_id = f'create_external_table_players',
-        table_resource = {
-            'tableReference': {
-            'projectId': PROJECT_ID,
-            'datasetId': TENNIS_DATASET,
-            'tableId': PLAYERS_TABLE,
-            },
-            'externalDataConfiguration': {
-                'sourceFormat': 'PARQUET',
-                'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{PLAYERS_TABLE}/*.parquet'],
-            },
-        }
-)
+    t7 = BigQueryCreateExternalTableOperator(
+            task_id = f'create_external_table_matches',
+            table_resource = {
+                'tableReference': {
+                'projectId': PROJECT_ID,
+                'datasetId': TENNIS_DATASET,
+                'tableId': MATCHES_TABLE,
+                },
+                'externalDataConfiguration': {
+                    'sourceFormat': 'PARQUET',
+                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{MATCHES_TABLE}/*.parquet'],
+                },
+            }
+    )
 
-t7 = BigQueryCreateExternalTableOperator(
-        task_id = f'create_external_table_matches',
-        table_resource = {
-            'tableReference': {
-            'projectId': PROJECT_ID,
-            'datasetId': TENNIS_DATASET,
-            'tableId': MATCHES_TABLE,
-            },
-            'externalDataConfiguration': {
-                'sourceFormat': 'PARQUET',
-                'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{MATCHES_TABLE}/*.parquet'],
-            },
-        }
-)
+    t8 = BigQueryCreateExternalTableOperator(
+            task_id = f'create_external_table_rankings',
+            table_resource = {
+                'tableReference': {
+                'projectId': PROJECT_ID,
+                'datasetId': TENNIS_DATASET,
+                'tableId': RANKINGS_TABLE,
+                },
+                'externalDataConfiguration': {
+                    'sourceFormat': 'PARQUET',
+                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{RANKINGS_TABLE}/*.parquet'],
+                },
+            }
+    )
 
-t8 = BigQueryCreateExternalTableOperator(
-        task_id = f'create_external_table_rankings',
-        table_resource = {
-            'tableReference': {
-            'projectId': PROJECT_ID,
-            'datasetId': TENNIS_DATASET,
-            'tableId': RANKINGS_TABLE,
-            },
-            'externalDataConfiguration': {
-                'sourceFormat': 'PARQUET',
-                'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{RANKINGS_TABLE}/*.parquet'],
-            },
-        }
-)
+    t9 = BashOperator(
+        task_id='delete_files',
+        bash_command='rm -r downloads',
+        dag=dag
+    )
 
-t9 = BashOperator(
-    task_id='delete_files',
-    bash_command='rm -r downloads',
-    dag=dag
-)
+    end = EmptyOperator(task_id="end")
 
-end = EmptyOperator(task_id="end")
-
-start >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 >> t9 >> end
+start >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 >> end
