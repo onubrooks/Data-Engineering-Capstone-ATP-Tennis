@@ -2,7 +2,7 @@ FROM apache/airflow:2.6.3
 
 ENV AIRFLOW_HOME=/opt/airflow
 # For local file running
-RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" pandas sqlalchemy psycopg2-binary
+RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" pandas sqlalchemy psycopg2-binary pycountry
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -r requirements.txt
@@ -38,5 +38,6 @@ WORKDIR $AIRFLOW_HOME
 
 COPY scripts scripts
 RUN chmod +x scripts
+RUN apt-get update && apt-get install wget
 
 USER $AIRFLOW_UID
