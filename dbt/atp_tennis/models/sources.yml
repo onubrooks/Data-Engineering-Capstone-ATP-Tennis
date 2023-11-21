@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: atp_tennis_data
+    database: altschool-projects
+    schema: atp_tennis_data # not required if it is the same as the name above.
+    tables:
+      - name: atp_players
+      - name: atp_matches
+      - name: atp_rankings
