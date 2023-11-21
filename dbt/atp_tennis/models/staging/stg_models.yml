@@ -16,14 +16,20 @@ models:
       - name: first_name
         description: "the player's first name"
         data_type: string
+        tests:
+          - not_null
 
       - name: last_name
         description: "the player's last name"
         data_type: string
+        tests:
+          - not_null
 
       - name: hand
         description: "the player's dominant hand"
         data_type: string
+        tests:
+          - not_null
 
       - name: dob
         description: "the player's date of birth"
@@ -32,6 +38,8 @@ models:
       - name: country_code
         description: "the player's country of origin"
         data_type: string
+        tests:
+          - not_null
 
       - name: height
         description: "the player's height in centimeters"
@@ -54,18 +62,26 @@ models:
       - name: ranking_date
         description: "the date of the ranking"
         data_type: date
+        tests:
+          - not_null
 
       - name: rank
         description: "the player's rank"
         data_type: int64
+        tests:
+          - not_null
 
       - name: player
         description: "the unique identifier for the player"
         data_type: int64
+        tests:
+          - not_null
 
       - name: points
         description: "the player's ranking points"
         data_type: int64
+        tests:
+          - not_null
 
   - name: atp_matches
     description: "the ATP matches for each player over a 23 year period from 2000 to 2022"
@@ -76,26 +92,38 @@ models:
       - name: tourney_id
         description: "the unique identifier for a tournament"
         data_type: string
+        tests:
+          - not_null
 
       - name: tourney_name
         description: "the name of the tournament"
         data_type: string
+        tests:
+          - not_null
 
       - name: surface
         description: "the surface of the court: clay, grass, or hard"
         data_type: string
+        tests:
+          - not_null
 
       - name: draw_size
         description: "the number of players in the tournament/draw"
         data_type: int64
+        tests:
+          - not_null
 
       - name: tourney_level
         description: "the level of the tournament: A, D, F, G, M"
         data_type: string
+        tests:
+          - not_null
 
       - name: match_date
         description: "the date of the match"
         data_type: date
+        tests:
+          - not_null
 
       - name: match_num
         description: "the match number"
@@ -104,6 +132,8 @@ models:
       - name: winner_id
         description: "the unique identifier for the winner of the match"
         data_type: int64
+        tests:
+          - not_null
 
       - name: winner_seed
         description: "the seed of the winner of the match"
@@ -124,6 +154,8 @@ models:
       - name: loser_id
         description: "the unique identifier for the loser of the match"
         data_type: int64
+        tests:
+          - not_null
 
       - name: loser_seed
         description: "the seed of the loser of the match"
@@ -144,6 +176,8 @@ models:
       - name: score
         description: "the score of the match"
         data_type: string
+        tests:
+          - not_null
 
       - name: best_of
         description: "the number of sets in the match"
@@ -152,6 +186,8 @@ models:
       - name: round
         description: "the tournament round of the match"
         data_type: string
+        tests:
+          - not_null
 
       - name: minutes
         description: "the number of minutes the match lasted"
