@@ -32,7 +32,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   +materialized: view
-  +tags: ['leaders', 'stats']
+  +tags: ['leaders', 'stats', 'rankings', 'players', 'matches']
   +persist_docs:
     relation: true
     columns: true

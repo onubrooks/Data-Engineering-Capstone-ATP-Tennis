@@ -9,32 +9,41 @@ models:
     columns:
       - name: player_id
         description: "the unique identifier for a player"
+        data_type: int64
         tests:
           - unique
 
       - name: first_name
         description: "the player's first name"
+        data_type: string
 
       - name: last_name
         description: "the player's last name"
+        data_type: string
 
       - name: hand
         description: "the player's dominant hand"
+        data_type: string
 
       - name: dob
         description: "the player's date of birth"
+        data_type: timestamp
 
       - name: country_code
         description: "the player's country of origin"
+        data_type: string
 
       - name: height
         description: "the player's height in centimeters"
+        data_type: float64
 
       - name: birth_date
         description: "the player's date of birth"
+        data_type: date
 
       - name: country
         description: "the player's country of origin"
+        data_type: string
 
   - name: atp_rankings
     description: "the ATP rankings for each player over a 23 year period from 2000 to 2022"
@@ -44,15 +53,19 @@ models:
     columns:
       - name: ranking_date
         description: "the date of the ranking"
+        data_type: date
 
       - name: rank
         description: "the player's rank"
+        data_type: int64
 
       - name: player
         description: "the unique identifier for the player"
+        data_type: int64
 
       - name: points
         description: "the player's ranking points"
+        data_type: int64
 
   - name: atp_matches
     description: "the ATP matches for each player over a 23 year period from 2000 to 2022"
@@ -62,129 +75,172 @@ models:
     columns:
       - name: tourney_id
         description: "the unique identifier for a tournament"
+        data_type: string
 
       - name: tourney_name
         description: "the name of the tournament"
+        data_type: string
 
       - name: surface
         description: "the surface of the court: clay, grass, or hard"
+        data_type: string
 
       - name: draw_size
         description: "the number of players in the tournament/draw"
+        data_type: int64
 
       - name: tourney_level
         description: "the level of the tournament: A, D, F, G, M"
+        data_type: string
 
       - name: match_date
         description: "the date of the match"
+        data_type: date
 
       - name: match_num
         description: "the match number"
+        data_type: int64
 
       - name: winner_id
         description: "the unique identifier for the winner of the match"
+        data_type: int64
 
       - name: winner_seed
         description: "the seed of the winner of the match"
+        data_type: float64
 
       - name: winner_entry
         description: "the entry of the winner of the match"
+        data_type: string
 
       - name: winner_hand
         description: "the dominant hand of the winner of the match"
+        data_type: string
 
       - name: winner_age
         description: "the age of the winner of the match"
+        data_type: float64
 
       - name: loser_id
         description: "the unique identifier for the loser of the match"
+        data_type: int64
 
       - name: loser_seed
         description: "the seed of the loser of the match"
+        data_type: float64
 
       - name: loser_entry
         description: "the entry of the loser of the match"
+        data_type: string
 
       - name: loser_hand
         description: "the dominant hand of the loser of the match"
+        data_type: string
 
       - name: loser_age
         description: "the age of the loser of the match"
+        data_type: float64
 
       - name: score
         description: "the score of the match"
+        data_type: string
 
       - name: best_of
         description: "the number of sets in the match"
+        data_type: int64
 
       - name: round
         description: "the tournament round of the match"
+        data_type: string
 
       - name: minutes
         description: "the number of minutes the match lasted"
+        data_type: float64
 
       - name: w_ace
         description: "the number of aces hit by the winner of the match"
+        data_type: float64
 
       - name: w_df
         description: "the number of double faults hit by the winner of the match"
+        data_type: float64
 
       - name: w_svpt
         description: "the number of service points played by the winner of the match"
+        data_type: float64
 
       - name: w_1stin
         description: "the number of first serves in by the winner of the match"
+        data_type: float64
 
       - name: w_1stwon
         description: "the number of first serve points won by the winner of the match"
+        data_type: float64
 
       - name: w_2ndwon
         description: "the number of second serve points won by the winner of the match"
+        data_type: float64
 
       - name: w_svgms
         description: "the number of service games played by the winner of the match"
+        data_type: float64
 
       - name: w_bpsaved
         description: "the number of break points saved by the winner of the match"
+        data_type: float64
 
       - name: w_bpfaced
         description: "the number of break points faced by the winner of the match"
+        data_type: float64
 
       - name: l_ace
         description: "the number of aces hit by the loser of the match"
+        data_type: float64
 
       - name: l_df
         description: "the number of double faults hit by the loser of the match"
+        data_type: float64
 
       - name: l_svpt
         description: "the number of service points played by the loser of the match"
+        data_type: float64
 
       - name: l_1stin
         description: "the number of first serves in by the loser of the match"
+        data_type: float64
 
       - name: l_1stwon
         description: "the number of first serve points won by the loser of the match"
+        data_type: float64
 
       - name: l_2ndwon
         description: "the number of second serve points won by the loser of the match"
+        data_type: float64
 
       - name: l_svgms
         description: "the number of service games played by the loser of the match"
+        data_type: float64
 
       - name: l_bpsaved
         description: "the number of break points saved by the loser of the match"
+        data_type: float64
 
       - name: l_bpfaced
         description: "the number of break points faced by the loser of the match"
+        data_type: float64
 
       - name: winner_rank
         description: "the rank of the winner of the match"
+        data_type: float64
 
       - name: winner_rank_points
         description: "the rank points of the winner of the match"
+        data_type: float64
 
       - name: loser_rank
         description: "the rank of the loser of the match"
+        data_type: float64
 
       - name: loser_rank_points
         description: "the rank points of the loser of the match"
+        data_type: float64

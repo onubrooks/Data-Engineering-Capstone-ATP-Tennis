@@ -1,8 +1,5 @@
 {{
 	config(
-		materialized='incremental',
-		unique_key='tourney_id',
-		on_schema_change='sync_all_columns',
 		partition_by={
 			"field":"match_date",
 			"data_type": "timestamp",
@@ -25,7 +22,7 @@ atp_matches as (
         surface,
         draw_size,
         tourney_level,
-        match_date,
+        DATE(match_date) AS match_date,
         match_num,
         winner_id,
         winner_seed,

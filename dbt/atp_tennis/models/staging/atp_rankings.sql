@@ -7,7 +7,7 @@ with source as (
 atp_rankings as (
 
     select
-        ranking_date,
+        DATE(ranking_date) AS ranking_date,
         rank,
         player,
         points
