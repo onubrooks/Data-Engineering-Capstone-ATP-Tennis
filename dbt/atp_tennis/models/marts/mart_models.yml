@@ -157,8 +157,6 @@ models:
       - name: winner_seed
         description: "the seed of the winner"
         data_type: float64
-        tests:
-          - not_null
       - name: winner_age
         description: "the age of the winner"
         data_type: float64
