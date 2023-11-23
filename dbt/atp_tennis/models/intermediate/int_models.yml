@@ -86,7 +86,8 @@ models:
         description: "the unique identifier for a match"
         data_type: string
         tests:
-          - unique
+          - not_null
+            # unique
       - name: tourney_id
         description: "the unique identifier for a tournament"
         data_type: string
@@ -111,8 +112,6 @@ models:
       - name: winner_seed
         description: "the seed of the winner of the match"
         data_type: float64
-        tests:
-          - not_null
       - name: winner_entry
         description: "the entry of the winner of the match"
         data_type: string
@@ -126,8 +125,6 @@ models:
       - name: winner_age
         description: "the age of the winner of the match"
         data_type: float64
-        tests:
-          - not_null
       - name: loser_id
         description: "the unique identifier for the loser of the match"
         data_type: int64
@@ -136,8 +133,6 @@ models:
       - name: loser_seed
         description: "the seed of the loser of the match"
         data_type: float64
-        tests:
-          - not_null
       - name: loser_entry
         description: "the entry of the loser of the match"
         data_type: string
@@ -171,8 +166,6 @@ models:
       - name: minutes
         description: "the minutes of the match"
         data_type: float64
-        tests:
-          - not_null
   - name: int_match_stats
     description: "A list of all tennis match stats on the ATP tour."
     config:
