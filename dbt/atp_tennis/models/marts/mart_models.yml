@@ -1,0 +1,247 @@
+version: 2
+
+models:
+  - name: weekly_rankings
+    description: "A list of all tennis surfaces on the ATP tour."
+    config:
+          contract:
+            enforced: true
+    columns:
+      - name: week_id
+        description: "the unique identifier for the week"
+        data_type: string
+        tests:
+          - unique
+      - name: rank
+        description: "the rank of the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: player_id
+        description: "the unique identifier for the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: points
+        description: "the number of points the player has"
+        data_type: int64
+        tests:
+          - not_null
+  - name: grandslam_matches
+    description: "A list of all matches in grand slam tournaments."
+    config:
+          contract:
+            enforced: true
+    columns: 
+      - name: match_id
+        description: "the unique identifier for a match"
+        data_type: string
+        tests:
+          - unique
+      - name: tourney_id
+        description: "the unique identifier for a tournament"
+        data_type: string
+        tests:
+          - not_null
+      - name: round
+        description: "the round of the tournament"
+        data_type: string
+        tests:
+          - not_null
+      - name: surface_name
+        description: "the surface name"
+        data_type: string
+        tests:
+          - not_null
+      - name: match_date
+        description: "the date of the match"
+        data_type: date
+        tests:
+          - not_null
+      - name: winner
+        description: "the winner of the match"
+        data_type: int64
+        tests:
+          - not_null
+      - name: loser
+        description: "the loser of the match"
+        data_type: int64
+        tests:
+          - not_null
+      - name: score
+        description: "the score of the match"
+        data_type: string
+        tests:
+          - not_null
+      - name: minutes
+        description: "the length of the match in minutes"
+        data_type: float64
+        tests:
+          - not_null
+  - name: non_grandslam_matches
+    description: "A list of all tennis matches that are not grand slams on the ATP tour"
+    config:
+          contract:
+            enforced: true
+    columns: 
+      - name: match_id
+        description: "the unique identifier for a match"
+        data_type: string
+        tests:
+          - unique
+      - name: tourney_id
+        description: "the unique identifier for a tournament"
+        data_type: string
+        tests:
+          - not_null
+      - name: round
+        description: "the round of the tournament"
+        data_type: string
+        tests:
+          - not_null
+      - name: surface_name
+        description: "the surface name"
+        data_type: string
+        tests:
+          - not_null
+      - name: match_date
+        description: "the date of the match"
+        data_type: date
+        tests:
+          - not_null
+      - name: winner
+        description: "the winner of the match"
+        data_type: int64
+        tests:
+          - not_null
+      - name: loser
+        description: "the loser of the match"
+        data_type: int64
+        tests:
+          - not_null
+      - name: score
+        description: "the score of the match"
+        data_type: string
+        tests:
+          - not_null
+      - name: minutes
+        description: "the length of the match in minutes"
+        data_type: float64
+        tests:
+          - not_null
+  - name: tournament_winners
+    description: "A list of all tennis surfaces on the ATP tour."
+    config:
+          contract:
+            enforced: true
+    columns:
+      - name: tourney_id
+        description: "the unique identifier for a tournament"
+        data_type: string
+        tests:
+          - unique
+      - name: year
+        description: "the year of the tournament"
+        data_type: int64
+        tests:
+          - not_null
+      - name: winner
+        description: "the winner of the tournament"
+        data_type: string
+        tests:
+          - not_null
+      - name: winner_id
+        description: "the unique identifier for the winner"
+        data_type: int64
+        tests:
+          - not_null
+      - name: winner_seed
+        description: "the seed of the winner"
+        data_type: float64
+        tests:
+          - not_null
+      - name: winner_age
+        description: "the age of the winner"
+        data_type: float64
+        tests:
+          - not_null
+  - name: match_advanced_stats
+    description: "The advanced stats for each match."
+    config:
+          contract:
+            enforced: true
+    columns:
+      - name: match_id
+        description: "the unique identifier for a match"
+        data_type: string
+        tests:
+          - unique
+      - name: winner_id
+        description: "the unique identifier for the winner"
+        data_type: int64
+        tests:
+          - not_null
+      - name: loser_id
+        description: "the unique identifier for the loser"
+        data_type: int64
+        tests:
+          - not_null
+      - name: w_ace
+        description: "the number of aces hit by the winner of the match"
+        data_type: float64
+      - name: w_df
+        description: "the number of double faults hit by the winner of the match"
+        data_type: float64
+      - name: w_svpt
+        description: "the number of service points played by the winner of the match"
+        data_type: float64
+      - name: w_1stin
+        description: "the number of first serves in by the winner of the match"
+        data_type: float64
+      - name: w_1stwon
+        description: "the number of first serve points won by the winner of the match"
+        data_type: float64
+      - name: w_2ndwon
+        description: "the number of second serve points won by the winner of the match"
+        data_type: float64
+      - name: w_svgms
+        description: "the number of service games played by the winner of the match"
+        data_type: float64
+      - name: w_bpsaved
+        description: "the number of break points saved by the winner of the match"
+        data_type: float64
+      - name: w_bpfaced
+        description: "the number of break points faced by the winner of the match"
+        data_type: float64
+      - name: l_ace
+        description: "the number of aces hit by the loser of the match"
+        data_type: float64
+      - name: l_df
+        description: "the number of double faults hit by the loser of the match"
+        data_type: float64
+      - name: l_svpt
+        description: "the number of service points played by the loser of the match"
+        data_type: float64
+      - name: l_1stin
+        description: "the number of first serves in by the loser of the match"
+        data_type: float64
+      - name: l_1stwon
+        description: "the number of first serve points won by the loser of the match"
+        data_type: float64
+      - name: l_2ndwon
+        description: "the number of second serve points won by the loser of the match"
+        data_type: float64
+      - name: l_svgms
+        description: "the number of service games played by the loser of the match"
+        data_type: float64
+      - name: l_bpsaved
+        description: "the number of break points saved by the loser of the match"
+        data_type: float64
+      - name: l_bpfaced
+        description: "the number of break points faced by the loser of the match"
+        data_type: float64
