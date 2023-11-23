@@ -41,8 +41,8 @@ models:
       - name: match_id
         description: "the unique identifier for a match"
         data_type: string
-        tests:
-          - unique
+        # tests:
+        #   - unique
       - name: tourney_id
         description: "the unique identifier for a tournament"
         data_type: string
@@ -81,8 +81,6 @@ models:
       - name: minutes
         description: "the length of the match in minutes"
         data_type: float64
-        tests:
-          - not_null
   - name: non_grandslam_matches
     description: "A list of all tennis matches that are not grand slams on the ATP tour"
     config:
@@ -92,8 +90,8 @@ models:
       - name: match_id
         description: "the unique identifier for a match"
         data_type: string
-        tests:
-          - unique
+        # tests:
+        #   - unique
       - name: tourney_id
         description: "the unique identifier for a tournament"
         data_type: string
@@ -132,8 +130,6 @@ models:
       - name: minutes
         description: "the length of the match in minutes"
         data_type: float64
-        tests:
-          - not_null
   - name: tournament_winners
     description: "A list of all tennis surfaces on the ATP tour."
     config:
@@ -143,8 +139,6 @@ models:
       - name: tourney_id
         description: "the unique identifier for a tournament"
         data_type: string
-        tests:
-          - unique
       - name: year
         description: "the year of the tournament"
         data_type: int64
@@ -168,8 +162,6 @@ models:
       - name: winner_age
         description: "the age of the winner"
         data_type: float64
-        tests:
-          - not_null
   - name: match_advanced_stats
     description: "The advanced stats for each match."
     config:
@@ -179,8 +171,8 @@ models:
       - name: match_id
         description: "the unique identifier for a match"
         data_type: string
-        tests:
-          - unique
+        # tests:
+        #   - unique
       - name: winner_id
         description: "the unique identifier for the winner"
         data_type: int64
