@@ -1,7 +1,7 @@
 -- generate a model for tennis surfaces in sql from the tennis_matches table
 with all_matches as (
 
-    select DISTINCT surface from {{ ref('atp_matches') }}
+    select DISTINCT surface from {{ ref('stg_matches') }}
 
 )
 

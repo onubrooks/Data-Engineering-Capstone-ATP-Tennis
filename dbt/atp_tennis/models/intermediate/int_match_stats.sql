@@ -1,6 +1,6 @@
 with all_matches as (
 
-    select * from {{ ref('atp_matches') }}
+    select * from {{ ref('stg_matches') }}
 
 )
 

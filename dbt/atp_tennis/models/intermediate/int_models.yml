@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: atp_surfaces
+  - name: int_surfaces
     description: "A list of all tennis surfaces on the ATP tour."
     config:
           contract:
@@ -18,8 +18,7 @@ models:
         data_type: string
         tests:
           - not_null
-
-  - name: atp_tournaments
+  - name: int_tournaments
     description: "A list of all tennis tournaments on the ATP tour."
     config:
           contract:
@@ -77,7 +76,7 @@ models:
       #   data_type: string
       #   tests:
       #     - not_null
-  - name: atp_tournament_matches
+  - name: int_tournament_matches
     description: "A list of all tennis matches on the ATP tour."
     config:
           contract:
@@ -174,7 +173,7 @@ models:
         data_type: float64
         tests:
           - not_null
-  - name: atp_match_stats
+  - name: int_match_stats
     description: "A list of all tennis match stats on the ATP tour."
     config:
           contract:
@@ -266,7 +265,7 @@ models:
       - name: loser_rank_points
         description: "the rank points of the loser of the match"
         data_type: float64
-  - name: weeks
+  - name: int_weeks
     description: "A list of all tennis weeks on the ATP tour."
     config:
           contract:

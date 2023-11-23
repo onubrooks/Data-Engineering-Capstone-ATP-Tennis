@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: atp_players
+  - name: stg_players
     description: "A list of all tennis players on the ATP tour."
     config:
           contract:
@@ -52,8 +52,7 @@ models:
       - name: country
         description: "the player's country of origin"
         data_type: string
-
-  - name: atp_rankings
+  - name: stg_rankings
     description: "the ATP rankings for each player over a 23 year period from 2000 to 2022"
     config:
           contract:
@@ -79,11 +78,10 @@ models:
 
       - name: points
         description: "the player's ranking points"
-        data_type: int64
+        data_type: float64
         tests:
           - not_null
-
-  - name: atp_matches
+  - name: stg_matches
     description: "the ATP matches for each player over a 23 year period from 2000 to 2022"
     config:
           contract:

@@ -1,16 +1,16 @@
 with weeks as (
 
-    select * from {{ ref('weeks') }}
+    select * from {{ ref('int_weeks') }}
 
 ),
 rankings as (
 
-    select * from {{ ref('atp_rankings') }}
+    select * from {{ ref('stg_rankings') }}
 
 ),
 players as (
 
-    select * from {{ ref('atp_players') }}
+    select * from {{ ref('stg_players') }}
 
 )
 

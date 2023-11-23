@@ -1,16 +1,16 @@
 WITH matches as (
 
-    SELECT * from {{ ref('atp_tournament_matches') }} 
+    SELECT * from {{ ref('int_tournament_matches') }} 
 
 ),
 players as (
 
-    SELECT * from {{ ref('atp_players') }}
+    SELECT * from {{ ref('stg_players') }}
 
 ),
 tournaments as (
 
-    SELECT * from {{ ref('atp_tournaments') }}
+    SELECT * from {{ ref('int_tournaments') }}
 
 )
 

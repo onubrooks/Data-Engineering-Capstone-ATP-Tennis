@@ -1,27 +1,27 @@
 -- generate a model for tennis surfaces in sql from the tennis_matches table
 with all_matches as (
 
-    select * from {{ ref('atp_tournament_matches') }}
+    select * from {{ ref('int_tournament_matches') }}
 
 ),
 tournaments as (
 
-    select * from {{ ref('atp_tournaments') }}
+    select * from {{ ref('int_tournaments') }}
 
 ),
 players as (
 
-    select * from {{ ref('atp_players') }}
+    select * from {{ ref('stg_players') }}
 
 ),
 stats as (
 
-    select * from {{ ref('atp_match_stats') }}
+    select * from {{ ref('int_match_stats') }}
 
 ),
 surfaces as (
 
-    select * from {{ ref('atp_surfaces') }}
+    select * from {{ ref('int_surfaces') }}
 
 )
 

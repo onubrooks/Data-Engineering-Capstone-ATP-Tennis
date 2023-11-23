@@ -1,6 +1,6 @@
 with ranking_table as (
 
-    select DISTINCT ranking_date from {{ ref('atp_rankings') }}
+    select DISTINCT ranking_date from {{ ref('stg_rankings') }}
 
 )
 

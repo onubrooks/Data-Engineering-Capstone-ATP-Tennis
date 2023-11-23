@@ -1,16 +1,16 @@
 with match_stats as (
 
-    select * from {{ ref('atp_match_stats') }}
+    select * from {{ ref('int_match_stats') }}
 
 ),
 players as (
     
-        select * from {{ ref('atp_players') }}
+        select * from {{ ref('stg_players') }}
     
 ),
 matches as (
 
-    select * from {{ ref('atp_tournament_matches') }}
+    select * from {{ ref('int_tournament_matches') }}
 
 )
 
