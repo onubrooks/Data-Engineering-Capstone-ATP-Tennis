@@ -134,6 +134,7 @@ with DAG(
     )
     
     # Docs: https://airflow.apache.org/docs/apache-airflow-providers-dbt-cloud/stable/index.html
+    # commented out because a free dbt cloud account can't use the dbt cloud api so this will fail, alternative is to run dbt locally
     """t9 = DbtCloudRunJobOperator(
         task_id="run_dbt_job",
         job_id=DBT_JOB_ID,
@@ -149,4 +150,5 @@ with DAG(
 
     end = EmptyOperator(task_id="end")
 
-start >> t1 >> t2 >> t3a >> t3b >> t4 >> t5 >> t6 >> t7 >> t8 >> end
+start >> t1 >> t2 >> t3a >> t3b >> t4 >> t5
+t5 >> [t6, t7, t8] >> t10 >> end
