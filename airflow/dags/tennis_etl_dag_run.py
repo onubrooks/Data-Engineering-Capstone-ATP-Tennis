@@ -6,6 +6,8 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryCreateExternalTableOperator
+from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
+from airflow.providers.dbt.cloud.operators.dbt import DbtCloudRunJobOperator
 
 from transform.job import transform_tennis_data
 from load.job import clean_and_load_tennis_data, upload_tennis_data_to_gcs
@@ -21,7 +23,7 @@ PG_DATABASE = os.getenv('PG_DATABASE')
 DOWNLOAD_DIRECTORY = "downloads"
 FULL_DOWNLOAD_PATH = f'{AIRFLOW_HOME}/dags/{DOWNLOAD_DIRECTORY}'
 
-MATCH_YEARS=(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020)
+MATCH_YEARS=(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
 
 RANK_YEARS=('00s', '10s', '20s')
 
@@ -32,6 +34,8 @@ TENNIS_DATASET = 'atp_tennis_data'
 PLAYERS_TABLE = 'atp_players'
 MATCHES_TABLE = 'atp_matches'
 RANKINGS_TABLE = 'atp_rankings'
+
+DBT_JOB_ID = os.environ.get("DBT_JOB_ID")
 
 default_args = {
     'owner': 'airflow',
@@ -67,10 +71,17 @@ with DAG(
         op_kwargs={'PG_USER': PG_USER, 'PG_PASSWORD': PG_PASSWORD, 'PG_HOST': PG_HOST, 'PG_PORT': PG_PORT, 'PG_DATABASE': PG_DATABASE, 'MATCH_YEARS': MATCH_YEARS, 'RANK_YEARS': RANK_YEARS, 'FILE_SAVE_LOCATION': FULL_DOWNLOAD_PATH},
     )
     
-    t3 = PostgresOperator(
+    t3a = PostgresOperator(
+        task_id="drop_tennis_db",
+        postgres_conn_id="postgres_default",
+        sql="DROP DATABASE IF EXISTS atp_tennis_2000_2022;",
+        autocommit=True,
+        dag=dag,
+    )
+    t3b = PostgresOperator(
         task_id="create_tennis_db",
         postgres_conn_id="postgres_default",
-        sql="CREATE DATABASE atp_tennis_2000_2019;",
+        sql="CREATE DATABASE atp_tennis_2000_2022;",
         autocommit=True,
         dag=dag,
     )
@@ -92,58 +103,50 @@ with DAG(
         dag=dag
     )
 
-    # BigQuery Docs: https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/bigquery.html
-    t6 = BigQueryCreateExternalTableOperator(
-            task_id = f'create_external_table_players',
-            table_resource = {
-                'tableReference': {
-                'projectId': PROJECT_ID,
-                'datasetId': TENNIS_DATASET,
-                'tableId': PLAYERS_TABLE,
-                },
-                'externalDataConfiguration': {
-                    'sourceFormat': 'PARQUET',
-                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{PLAYERS_TABLE}/*.parquet'],
-                },
-            }
+    t6 =  GCSToBigQueryOperator(
+            task_id = f'create_table_players',
+            bucket=f"{DESTINATION_BUCKET}",
+            source_format='PARQUET',
+            source_objects=[f"{TENNIS_DATASET}/{PLAYERS_TABLE}/*.parquet"],
+            destination_project_dataset_table=f"{PROJECT_ID}.{TENNIS_DATASET}.{PLAYERS_TABLE}",
+            autodetect=True,
+            write_disposition="WRITE_TRUNCATE",
     )
-
-    t7 = BigQueryCreateExternalTableOperator(
-            task_id = f'create_external_table_matches',
-            table_resource = {
-                'tableReference': {
-                'projectId': PROJECT_ID,
-                'datasetId': TENNIS_DATASET,
-                'tableId': MATCHES_TABLE,
-                },
-                'externalDataConfiguration': {
-                    'sourceFormat': 'PARQUET',
-                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{MATCHES_TABLE}/*.parquet'],
-                },
-            }
+    
+    t7 =  GCSToBigQueryOperator(
+            task_id = f'create_table_matches',
+            bucket=f"{DESTINATION_BUCKET}",
+            source_format='PARQUET',
+            source_objects=[f"{TENNIS_DATASET}/{MATCHES_TABLE}/*.parquet"],
+            destination_project_dataset_table=f"{PROJECT_ID}.{TENNIS_DATASET}.{MATCHES_TABLE}",
+            autodetect=True,
+            write_disposition="WRITE_APPEND",
     )
-
-    t8 = BigQueryCreateExternalTableOperator(
-            task_id = f'create_external_table_rankings',
-            table_resource = {
-                'tableReference': {
-                'projectId': PROJECT_ID,
-                'datasetId': TENNIS_DATASET,
-                'tableId': RANKINGS_TABLE,
-                },
-                'externalDataConfiguration': {
-                    'sourceFormat': 'PARQUET',
-                    'sourceUris': [f'gs://{DESTINATION_BUCKET}/{TENNIS_DATASET}/{RANKINGS_TABLE}/*.parquet'],
-                },
-            }
+    
+    t8 =  GCSToBigQueryOperator(
+            task_id = f'create_table_rankings',
+            bucket=f"{DESTINATION_BUCKET}",
+            source_format='PARQUET',
+            source_objects=[f"{TENNIS_DATASET}/{RANKINGS_TABLE}/*.parquet"],
+            destination_project_dataset_table=f"{PROJECT_ID}.{TENNIS_DATASET}.{RANKINGS_TABLE}",
+            autodetect=True,
+            write_disposition="WRITE_APPEND",
     )
+    
+    # Docs: https://airflow.apache.org/docs/apache-airflow-providers-dbt-cloud/stable/index.html
+    """t9 = DbtCloudRunJobOperator(
+        task_id="run_dbt_job",
+        job_id=DBT_JOB_ID,
+        check_interval=10,
+        timeout=300,
+    )"""
 
-    """t9 = BashOperator(
+    t10 = BashOperator(
         task_id='delete_files',
         bash_command=f'rm -r {FULL_DOWNLOAD_PATH}',
         dag=dag
     )
 
-    end = EmptyOperator(task_id="end")"""
+    end = EmptyOperator(task_id="end")
 
-start >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8 #>> end
+start >> t1 >> t2 >> t3a >> t3b >> t4 >> t5 >> t6 >> t7 >> t8 >> end

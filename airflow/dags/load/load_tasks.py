@@ -71,6 +71,7 @@ def clean_and_load_rankings(FILE_PATH, db_engine, rank_years):
         # convert ranking_date to datetime from yyyymmdd format
         rankings['ranking_date'] = rankings['ranking_date'].astype(str).str.slice(0, 8)
         rankings['ranking_date'] = rankings.ranking_date.apply(str_to_datetime)
+        rankings['points'] = rankings['points'].astype(float)
         
         # write transformed rankings file back to parquet and postgres
         rankings.reset_index(drop=True, inplace=True)

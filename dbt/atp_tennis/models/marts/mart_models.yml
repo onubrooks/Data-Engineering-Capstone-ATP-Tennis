@@ -29,7 +29,7 @@ models:
           - not_null
       - name: points
         description: "the number of points the player has"
-        data_type: int64
+        data_type: float64
         tests:
           - not_null
   - name: grandslam_matches

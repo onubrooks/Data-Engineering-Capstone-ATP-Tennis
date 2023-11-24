@@ -87,6 +87,7 @@ x-airflow-common:
     PG_PORT: 5432
     PG_DATABASE: "atp_tennis_2000_2019"
     AIRFLOW_CONN_POSTGRES_DEFAULT: "postgresql://root:root@altschool_de:5432/ny_taxi"
+    DBT_JOB_ID: "462798"
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
