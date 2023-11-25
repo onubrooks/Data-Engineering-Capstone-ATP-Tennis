@@ -1,4 +1,9 @@
--- generate a model for tennis surfaces in sql from the tennis_matches table
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 with all_matches as (
 
     select * from {{ ref('int_tournament_matches') }}
@@ -32,4 +37,4 @@ SELECT
     LEFT JOIN stats USING (match_id)
     LEFT JOIN players p1 ON (winner_id = p1.player_id)
     LEFT JOIN players p2 ON (loser_id = p2.player_id)
-    WHERE tournaments.draw_size = 128
+    WHERE tournaments.draw_size != 128

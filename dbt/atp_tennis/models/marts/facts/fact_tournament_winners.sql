@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 WITH matches as (
 
     SELECT * from {{ ref('int_tournament_matches') }} 

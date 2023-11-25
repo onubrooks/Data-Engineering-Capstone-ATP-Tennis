@@ -11,7 +11,7 @@ atp_players as (
         first_name,
         last_name,
         hand,
-        timestamp(dob) as dob,
+        dob,
         country_code,
         height,
         DATE(birth_date) as birth_date,

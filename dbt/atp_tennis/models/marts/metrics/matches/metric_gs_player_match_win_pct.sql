@@ -1,10 +1,15 @@
--- Calculate the total number of matches played by each player
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 WITH player_matches AS (
     SELECT
-        player_id,
+        winner AS player_id,
         COUNT(*) AS total_matches
     FROM
-        {{ ref('non_grandslam_matches') }}
+        {{ ref('fact_grandslam_matches') }}
     GROUP BY
         player_id
 ),
@@ -15,7 +20,7 @@ player_wins AS (
         winner AS player_id,
         COUNT(*) AS total_wins
     FROM
-        {{ ref('non_grandslam_matches') }}
+        {{ ref('fact_grandslam_matches') }}
     GROUP BY
         player_id
 ),
@@ -28,9 +33,9 @@ player_match_win_pct AS (
         pm.total_matches,
         pw.total_wins,
         CASE
-            WHEN pm.total_matches > 0 THEN pw.total_wins / pm.total_matches::float * 100
+            WHEN pm.total_matches > 0 THEN pw.total_wins / pm.total_matches * 100
             ELSE 0
-        END AS win_percentage
+        END AS win_pct
     FROM
         player_matches pm
     LEFT JOIN
@@ -44,8 +49,8 @@ SELECT
     player_name,
     total_matches,
     total_wins,
-    win_percentage
+    win_pct
 FROM
     player_match_win_pct
 ORDER BY
-    win_percentage DESC;
+    win_pct DESC

@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 with match_stats as (
 
     select * from {{ ref('int_match_stats') }}

@@ -33,7 +33,7 @@ models:
 
       - name: dob
         description: "the player's date of birth"
-        data_type: timestamp
+        data_type: string
 
       - name: country_code
         description: "the player's country of origin"

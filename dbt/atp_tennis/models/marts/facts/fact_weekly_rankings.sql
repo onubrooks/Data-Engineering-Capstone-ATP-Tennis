@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 with weeks as (
 
     select * from {{ ref('int_weeks') }}

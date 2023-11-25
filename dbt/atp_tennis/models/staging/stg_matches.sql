@@ -2,7 +2,7 @@
 	config(
 		partition_by={
 			"field":"match_date",
-			"data_type": "timestamp",
+			"data_type": "date_time",
 			"granularity": "year"
 		}
 	)

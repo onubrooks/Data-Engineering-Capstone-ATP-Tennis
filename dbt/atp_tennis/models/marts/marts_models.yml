@@ -1,11 +1,12 @@
 version: 2
 
 models:
-  - name: weekly_rankings
+  - name: fact_weekly_rankings
     description: "A list of all tennis surfaces on the ATP tour."
     config:
-          contract:
-            enforced: true
+      contract:
+        enforced: true
+      materialized: table
     columns:
       - name: week_id
         description: "the unique identifier for the week"
@@ -32,11 +33,11 @@ models:
         data_type: float64
         tests:
           - not_null
-  - name: grandslam_matches
+  - name: fact_grandslam_matches
     description: "A list of all matches in grand slam tournaments."
-    config:
-          contract:
-            enforced: true
+    contract:
+      enforced: true
+    materialized: table
     columns: 
       - name: match_id
         description: "the unique identifier for a match"
@@ -81,11 +82,11 @@ models:
       - name: minutes
         description: "the length of the match in minutes"
         data_type: float64
-  - name: non_grandslam_matches
+  - name: fact_non_grandslam_matches
     description: "A list of all tennis matches that are not grand slams on the ATP tour"
-    config:
-          contract:
-            enforced: true
+    contract:
+      enforced: true
+    materialized: table
     columns: 
       - name: match_id
         description: "the unique identifier for a match"
@@ -130,11 +131,11 @@ models:
       - name: minutes
         description: "the length of the match in minutes"
         data_type: float64
-  - name: tournament_winners
+  - name: fact_tournament_winners
     description: "A list of all tennis surfaces on the ATP tour."
-    config:
-          contract:
-            enforced: true
+    contract:
+      enforced: true
+    materialized: table
     columns:
       - name: tourney_id
         description: "the unique identifier for a tournament"
@@ -160,11 +161,11 @@ models:
       - name: winner_age
         description: "the age of the winner"
         data_type: float64
-  - name: match_advanced_stats
+  - name: fact_match_advanced_stats
     description: "The advanced stats for each match."
-    config:
-          contract:
-            enforced: true
+    contract:
+      enforced: true
+    materialized: table
     columns:
       - name: match_id
         description: "the unique identifier for a match"
@@ -235,3 +236,174 @@ models:
       - name: l_bpfaced
         description: "the number of break points faced by the loser of the match"
         data_type: float64
+  - name: metric_gs_player_match_win_pct
+    description: "The win percentage of a player in grand slam matches."
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: total_matches
+        description: "the total number of matches played by the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: total_wins
+        description: "the total number of matches won by the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: win_pct
+        description: "the win percentage of the player"
+        data_type: float64
+        tests:
+          - not_null
+  - name: metric_player_match_win_pct
+    description: "The win percentage of a player in non grand slam matches."
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: total_matches
+        description: "the total number of matches played by the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: total_wins
+        description: "the total number of matches won by the player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: win_pct
+        description: "the win percentage of the player"
+        data_type: float64
+        tests:
+          - not_null
+  - name: metric_weeks_as_number_one
+    description: "The number of weeks a player has been ranked number one."
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: total_weeks_as_number_one
+        description: "the number of weeks the player has been ranked number one"
+        data_type: int64
+        tests:
+          - not_null
+  - name: metric_rolling_average_points
+    description: "The rolling average of points for a player."
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: week_id
+        description: "the unique identifier for a week"
+        data_type: string
+        tests:
+          - not_null
+      - name: points
+        description: "the points for the player that week"
+        data_type: float64
+        tests:
+          - not_null
+      - name: rolling_average_points
+        description: "the rolling average of points for the player"
+        data_type: float64
+        tests:
+          - not_null
+  - name: metric_break_points_save_pct
+    description: "The break point save percentage for a player."
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: bp_faced
+        description: "the total number of break points faced by the player"
+        data_type: float64
+        tests:
+          - not_null
+      - name: bp_saved
+        description: "the total number of break points saved by the player"
+        data_type: float64
+        tests:
+          - not_null
+      - name: bp_save_pct
+        description: "the break point save percentage for the player"
+        data_type: float64
+        tests:
+          - not_null
+  - name: metric_first_serve_leaders
+    description: "The leaders in first serve percentage wins for a player"
+    contract:
+      enforced: true
+    materialized: table
+    columns:
+      - name: player_id
+        description: "the unique identifier for a player"
+        data_type: int64
+        tests:
+          - not_null
+      - name: player_name
+        description: "the name of the player"
+        data_type: string
+        tests:
+          - not_null
+      - name: first_serve_in
+        description: "the total number of first serves in by the player"
+        data_type: float64
+        tests:
+          - not_null
+      - name: first_serve_won
+        description: "the total number of first serve points won by the player"
+        data_type: float64
+        tests:
+          - not_null
+      - name: first_serve_pct
+        description: "the first serve percentage for the player"
+        data_type: float64
+        tests:
+          - not_null
