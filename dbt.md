@@ -53,3 +53,31 @@ The mart models are the final step in the transformation process. They are used 
   * **metric_player_match_win_pct:** This table contains the match win percentage for each player in all tournaments.
   * **metric_rolling_avg_points:** This table contains the rolling average of rank points for each player.
   * **metric_weeks_as_number_one:** This table contains the number of weeks
+
+### Questions we can ask of these fact tables
+
+**Match-related questions:**
+
+1. How many matches have been played in each Grand Slam tournament?
+2. What is the average match duration for each Grand Slam tournament?
+3. How many matches have been played in each round of each Grand Slam tournament?
+4. What is the average number of games played per match in each Grand Slam tournament?
+5. What is the average number of sets played per match in each Grand Slam tournament?
+
+**Player-related questions:**
+
+1. Who has played the most Grand Slam matches?
+2. Who has won the most Grand Slam matches?
+3. Who has the highest winning percentage in Grand Slam matches?
+4. Who has the most Grand Slam match wins against different opponents?
+5. Who has the most Grand Slam match wins in different countries?
+
+**Tournament-related questions:**
+
+1. Which Grand Slam tournament has hosted the most matches?
+2. Which Grand Slam tournament has had the longest matches?
+3. Which Grand Slam tournament has had the most upsets (lower-ranked player wins over a higher-ranked player)?
+4. Which Grand Slam tournament has had the most comebacks (player loses the first set and wins the match)?
+5. Which Grand Slam tournament has had the highest attendance?
+
+These are just a few examples of the many analytics questions you can ask of the facts tables we generated in this project. The specific questions you ask will depend on your specific interests and goals.
