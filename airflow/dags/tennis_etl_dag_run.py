@@ -134,13 +134,13 @@ with DAG(
     )
     
     # Docs: https://airflow.apache.org/docs/apache-airflow-providers-dbt-cloud/stable/index.html
-    # commented out because a free dbt cloud account can't use the dbt cloud api so this will fail, alternative is to run dbt locally
-    """t9 = DbtCloudRunJobOperator(
+    # a free dbt cloud account can't use the dbt cloud api so this will fail, alternative is to run dbt locally
+    t9 = DbtCloudRunJobOperator(
         task_id="run_dbt_job",
         job_id=DBT_JOB_ID,
         check_interval=10,
         timeout=300,
-    )"""
+    )
 
     t10 = BashOperator(
         task_id='delete_files',

@@ -1,6 +1,6 @@
 # Data-Engineering-Capstone-ATP-Tennis
 
-This repository contains data engineering code and analysis of historical ATP tennis world tour data from 2000 to 2019. The project explores various aspects of the data, such as player performance, match outcomes, and tournament trends. The code includes data cleaning, transformation, and visualization techniques. The project aims to provide insights into the world of professional tennis and develop data-driven models for predicting match outcomes.
+This repository contains data engineering code and analysis of historical ATP tennis world tour data from 2000 to 2022. The project explores various aspects of the data, such as player performance, match outcomes, and tournament trends. The code includes data cleaning, transformation, and visualization techniques. The project aims to provide insights into the world of professional tennis and develop data-driven models for predicting match outcomes.
 
 ## Technologies used
 
@@ -38,11 +38,11 @@ This capstone project demonstrates the potential of data engineering to transfor
 
 ## Documentation and set up for the technologies used
 
-- Airflow: For detailed instructions on setting up and using Airflow, please refer to the official documentation: [https://airflow.apache.org/docs/](https://airflow.apache.org/docs/). Local set up of airflow and docker can be found here: [airflow.md](/airflow.md).
+- Airflow: For detailed instructions on setting up and using Airflow, please refer to the official documentation: [https://airflow.apache.org/docs/](https://airflow.apache.org/docs/). Airflow DAGs architecture can be found here: [airflow.md](/airflow.md).
 
-- DBT: For comprehensive documentation on DBT installation, configuration, and usage, please visit the official documentation: [https://docs.getdbt.com/docs/collaborate/documentation](https://docs.getdbt.com/docs/collaborate/documentation). Local set up for this project can be found here: [dbt.md](/dbt.md).
+- DBT: For comprehensive documentation on DBT installation, configuration, and usage, please visit the official documentation: [https://docs.getdbt.com/docs/collaborate/documentation](https://docs.getdbt.com/docs/collaborate/documentation). The data model architecture for DBT can be found here: [dbt.md](/dbt.md).
 
-- Google Cloud: To set up and utilize Google Cloud services, including GCS, BigQuery, and Pub/Sub, follow the official documentation and tutorials provided by Google: [https://cloud.google.com/docs](https://cloud.google.com/docs). Local set up for this project can be found here: [google_cloud.md](/google_cloud.md).
+- Google Cloud: To set up and utilize Google Cloud services, including GCS, BigQuery, and Pub/Sub, follow the official documentation and tutorials provided by Google: [https://cloud.google.com/docs](https://cloud.google.com/docs).
 
 - Docker: For comprehensive instructions on installing and using Docker, please refer to the official documentation: [https://docs.docker.com/](https://docs.docker.com/).
 
