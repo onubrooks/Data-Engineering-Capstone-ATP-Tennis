@@ -15,6 +15,9 @@ dbt run-operation generate_model_yaml --args '{"model_names": ["atp_players", "a
 
 ## Architecture
 
+<img width="1185" alt="dbt_lineage" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/cf1e3a34-91ea-49a1-b7d3-20a2592ec7b6">
+
+
 ### Tables vs Views
 
 For best practices, we use views for all staging and intermediate models since they occupy less space and need to be up to date at all times. The marts however are actual tables on BigQuery so that analytics queries can be run quickly and on demand.
