@@ -20,6 +20,9 @@ To ensure consistent and reproducible development and deployment environments, t
 
 The data used in this project is obtained from the ATP Tennis Rankings, Results, and Stats repository on GitHub [https://github.com/JeffSackmann/tennis_atp](https://github.com/JeffSackmann/tennis_atp). This repository contains a comprehensive collection of ATP match results, player rankings, and biographical information. The data is provided in CSV format and spans from 1968 to the present. However, for this project, the focus is on a 20-year period between 2000 and 2019, using men's singles data on the ATP tour only (excluding doubles and ATP futures/challenger series).
 
+![Architecture](https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/8ee75d38-4202-4157-8f96-bb07ec47ae4f)
+
+
 ## Motivation and Business case
 
 Professional tennis is a highly competitive and data-driven sport. Understanding player performance, match outcomes, and tournament trends can provide valuable insights for coaches, players, and fans. Data engineering plays a crucial role in collecting, processing, and analyzing large amounts of tennis data. This capstone project aims to demonstrate the application of data engineering techniques to ATP tennis data, providing insights and potential business opportunities.
@@ -37,6 +40,8 @@ Professional tennis is a highly competitive and data-driven sport. Understanding
 This capstone project demonstrates the potential of data engineering to transform the way tennis data is analyzed and utilized, leading to valuable insights and business opportunities.
 
 ## Documentation and set up for the technologies used
+
+- Architecture: The high level project architecture can be found here: [architecture.md](/architecture.md).
 
 - Airflow: For detailed instructions on setting up and using Airflow, please refer to the official documentation: [https://airflow.apache.org/docs/](https://airflow.apache.org/docs/). Airflow DAGs architecture can be found here: [airflow.md](/airflow.md).
 
