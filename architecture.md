@@ -40,9 +40,8 @@ The data modelling is designed to support a variety of analytical queries, such 
 
 The following diagram shows the architecture of the data pipeline:
 
-```none
-[Data Sources] -> [Data Ingestion] -> [Data Transformation] -> [Data Warehousing] -> [Data Modeling]
-```
+![Architecture](https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/ecab89b5-6a36-4510-8eba-c8774b2dd5da)
+
 
 ### Conclusion
 
