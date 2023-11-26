@@ -4,8 +4,7 @@
 
 The Airflow DAG orchestrates the extraction, transformation, and loading of tennis data from raw sources to a PostgreSQL database and Google BigQuery. It also performs data cleaning and uploads parquet files to Google Cloud Storage.
 
-<img width="1201" alt="Airflow DAG" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/116be332-bc0a-40eb-9c21-dfbe1ac37854">
-
+<img width="1177" alt="airflow_dag" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/17aaeb22-698f-4390-bc7d-5b922f9fcd66">
 
 ## Dependencies
 
