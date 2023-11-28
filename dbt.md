@@ -1,18 +1,5 @@
 # Data Modelling with Data Build Tool(DBT)
 
-Two important handy commands DBT provides are:
-To generate base model SQL:
-
-```sh
-dbt run-operation generate_base_model --args '{"source_name": "atp_tennis_data", "table_name": "atp_players"}'
-```
-
-To generate base model YAML files:
-
-```sh
-dbt run-operation generate_model_yaml --args '{"model_names": ["atp_players", "atp_rankings", "atp_matches"]}'
-```
-
 ## Architecture
 
 <img width="1185" alt="dbt_lineage" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/cf1e3a34-91ea-49a1-b7d3-20a2592ec7b6">
@@ -84,3 +71,27 @@ The mart models are the final step in the transformation process. They are used 
 5. Which Grand Slam tournament has had the highest attendance?
 
 These are just a few examples of the many analytics questions you can ask of the facts tables we generated in this project. The specific questions you ask will depend on your specific interests and goals.
+
+### Star Schema Modelling
+
+Below are the diagrams for a star schema model of the transformed dataset. It is worth noting that the models in the metrics folder don't particularly follow the star schema and are designed as self-contained, denormalised analytics tables containing the full information with no need for joining other tables which can affect query performance. The approach to use between star schema or other models that use fully denormalised tables is a long discussion and really depends on the particular use case.
+
+Grandslam Matches
+
+<img width="735" alt="Grandslam Matches" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/dc22eaed-eea2-4289-a6fc-7b266fb4053e">
+
+
+Tournament Winners
+
+<img width="627" alt="Tournament Winners" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/9fc38ac8-c25b-46e1-93f4-b0806b14a54c">
+
+
+Weekly Rankings
+
+<img width="731" alt="Weekly Rankings" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/51fb65f0-5eb9-4184-8ed1-22856f9ff3af">
+
+
+Match Advanced Stats
+
+<img width="625" alt="Match Advanced Stats" src="https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/5661eac4-d93e-4298-9b97-796706e3187a">
+
