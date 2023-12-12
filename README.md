@@ -20,7 +20,8 @@ To ensure consistent and reproducible development and deployment environments, t
 
 The data used in this project is obtained from the ATP Tennis Rankings, Results, and Stats repository on GitHub [https://github.com/JeffSackmann/tennis_atp](https://github.com/JeffSackmann/tennis_atp). This repository contains a comprehensive collection of ATP match results, player rankings, and biographical information. The data is provided in CSV format and spans from 1968 to the present. However, for this project, the focus is on a 20-year period between 2000 and 2019, using men's singles data on the ATP tour only (excluding doubles and ATP futures/challenger series).
 
-![Architecture](https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/8ee75d38-4202-4157-8f96-bb07ec47ae4f)
+![Tennis Data Pipeline](https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/8292fbea-9d61-4928-b04f-652515486bcf)
+
 
 
 ## Motivation and Business case
@@ -50,6 +51,8 @@ This capstone project demonstrates the potential of data engineering to transfor
 - Google Cloud: To set up and utilize Google Cloud services, including GCS, BigQuery, and Pub/Sub, follow the official documentation and tutorials provided by Google: [https://cloud.google.com/docs](https://cloud.google.com/docs).
 
 - Docker: For comprehensive instructions on installing and using Docker, please refer to the official documentation: [https://docs.docker.com/](https://docs.docker.com/).
+
+![Architecture](https://github.com/onubrooks/Data-Engineering-Capstone-ATP-Tennis/assets/26160845/8ee75d38-4202-4157-8f96-bb07ec47ae4f)
 
 ## Potential improvements and other technologies
 
