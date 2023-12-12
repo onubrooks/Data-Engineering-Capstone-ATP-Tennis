@@ -1,0 +1,87 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table dim_players {
+  player_id varchar
+  first_name varchar
+  last_name varchar 
+  birth_date date
+  country varchar
+}
+
+Table fact_grandslam_matches {
+  match_id varchar [primary key]
+  tourney_id varchar
+  round varchar
+  winner_id varchar
+  loser_id varchar
+  week_id varchar
+  score varchar
+  minutes float
+}
+
+Table dim_tournaments {
+  tourney_id varchar [primary key]
+  tourney_name varchar
+  tourney_level varchar
+  draw_size integer
+  surface varchar
+}
+
+Table dim_weeks {
+  week_id varchar [primary key]
+  week_number varchar
+  year varchar
+  week_date integer
+}
+
+Table fact_tournament_winners {
+  tourney_id varchar
+  winner_id varchar
+  year varchar
+  winner_seed integer
+  winner_age float
+}
+
+Table fact_weekly_rankings {
+  week_id varchar
+  player_id varchar
+  rank integer
+  points float
+}
+
+Table fact_match_advanced_stats {
+  match_id varchar
+  winner_id varchar
+  loser_id varchar
+  w_ace float
+  l_ace float
+  w_1stwon float
+  l_1stwon float
+}
+
+// grandslam matches
+Ref: fact_grandslam_matches.tourney_id > dim_tournaments.tourney_id // many-to-one
+
+Ref: fact_grandslam_matches.winner_id > dim_players.player_id
+
+Ref: fact_grandslam_matches.loser_id > dim_players.player_id
+
+Ref: fact_grandslam_matches.week_id > dim_weeks.week_id
+
+// tournament winners
+Ref: fact_tournament_winners.tourney_id > dim_tournaments.tourney_id // many-to-one
+
+Ref: fact_tournament_winners.winner_id > dim_players.player_id
+
+// weekly rankings
+Ref: fact_weekly_rankings.player_id > dim_players.player_id
+
+Ref: fact_weekly_rankings.week_id > dim_weeks.week_id
+
+// match advanced stats
+Ref: fact_match_advanced_stats.match_id > fact_grandslam_matches.match_id
+
+Ref: fact_match_advanced_stats.winner_id > dim_players.player_id
+
+Ref: fact_match_advanced_stats.loser_id > dim_players.player_id
